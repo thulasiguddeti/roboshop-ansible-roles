@@ -8,12 +8,12 @@
     name: mongodb-org-shell 
     state: present
 
-- name: "get the {{component}} entries count"
+- name: get the catalogue entries count
   ansible.builtin.shell: mongo --host mongodb.pragna.site --quiet --eval 'db = db.getSiblingDB("catalogue"); db.products.count()'
   register: entries_count
   when: component == "catalogue"
 
-- name: "get the {{component}} entries count"
+- name: get the user entries count
   ansible.builtin.shell: mongo --host mongodb.pragna.site --quiet --eval 'db = db.getSiblingDB("users"); db.users.count()'
   register: entries_count
   when: component == "user"
