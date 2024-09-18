@@ -23,12 +23,12 @@
  # ansible.builtin.debug:
   #  msg: "entries_count={{entries_count}}"
 
-- name: "load {{component}} data"
+- name: load catalogue data
   ansible.builtin.shell: "mongo --host mongodb.pragna.site < /app/schema/{{component}}.js"
   when: product_count.stdout == "0" and component == "catalogue"  ## keep double quotes 
 
 
-- name: "load {{component}} data"
+- name: load user data
   ansible.builtin.shell: "mongo --host mongodb.pragna.site < /app/schema/{{component}}.js"
   when: users_count.stdout == "0" and component == "user" ## keep double quotes 
 
