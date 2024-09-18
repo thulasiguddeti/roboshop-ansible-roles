@@ -8,7 +8,12 @@
     name: common
     tasks_from: nodejs
 
-- name: app set up
+- name: mongodb set up
   ansible.builtin.import_role:
     name: common
     tasks_from: mongodb-setup
+
+- name: start catalogue service
+  ansible.builtin.import_role:
+    name: common
+    tasks_from: systemd
