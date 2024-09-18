@@ -10,20 +10,26 @@
 
 - name: get the catalogue entries count
   ansible.builtin.shell: mongo --host mongodb.pragna.site --quiet --eval 'db = db.getSiblingDB("catalogue"); db.products.count()'
-  register: entries_count
+  register: product_count
   when: component == "catalogue"
 
 - name: get the user entries count
   ansible.builtin.shell: mongo --host mongodb.pragna.site --quiet --eval 'db = db.getSiblingDB("users"); db.users.count()'
-  register: entries_count
+  register: users_count
   when: component == "user"
 
 
-- name: print the count
-  ansible.builtin.debug:
-    msg: entries_count={{component}}
+#- name: print the count
+ # ansible.builtin.debug:
+  #  msg: "entries_count={{entries_count}}"
 
 - name: "load {{component}} data"
   ansible.builtin.shell: "mongo --host mongodb.pragna.site < /app/schema/{{component}}.js"
-  when: entries_count.stdout == "0" ## keep double quotes 
+  when: product_count.stdout == "0" and component == "catalogue"  ## keep double quotes 
+
+
+- name: "load {{component}} data"
+  ansible.builtin.shell: "mongo --host mongodb.pragna.site < /app/schema/{{component}}.js"
+  when: users_count.stdout == "0" and component == "user" ## keep double quotes 
+
 
