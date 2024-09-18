@@ -3,28 +3,27 @@
     src: mongodb.repo 
     dest: /etc/yum.repos.d/mongo.repo
 
-  - name: Install mongodb client
-    ansible.builtin.package:
-      name: mongodb-org-shell 
-      state: present
+- name: Install mongodb client
+  ansible.builtin.package:
+    name: mongodb-org-shell 
+    state: present
 
-  - name: get the entries count
-    ansible.builtin.command: mongo --host mongodb.pragna.site --quiet --eval 'db = db.getSiblingDB("catalogue"); db.products.count()'
-    register: entries_count
-    when: component == "catalogue"
+- name: get the entries count
+  ansible.builtin.command: mongo --host mongodb.pragna.site --quiet --eval 'db = db.getSiblingDB("catalogue"); db.products.count()'
+  register: entries_count
+  when: component == "catalogue"
 
-  - name: get the entries count
-    ansible.builtin.command: mongo --host mongodb.pragna.site --quiet --eval 'db = db.getSiblingDB("users"); db.users.count()'
-    register: entries_count
-    when: component == "user"
+- name: get the entries count
+  ansible.builtin.command: mongo --host mongodb.pragna.site --quiet --eval 'db = db.getSiblingDB("users"); db.users.count()'
+  register: entries_count
+  when: component == "user"
 
 
-  #- name: print the count
-   # ansible.builtin.debug:
-    #  msg: "{{product_count}}"
+#- name: print the count
+  # ansible.builtin.debug:
+  #  msg: "{{product_count}}"
 
-  - name: "load {{component}} data"
-    ansible.builtin.command: "mongo --host mongodb.pragna.site < /app/schema/{{component}}.js"
-    when: entries_count.stdout == "0" ## keep double quotes 
+- name: "load {{component}} data"
+  ansible.builtin.command: "mongo --host mongodb.pragna.site < /app/schema/{{component}}.js"
+  when: entries_count.stdout == "0" ## keep double quotes 
 
-  
