@@ -1,1 +1,2 @@
 MONGODB_HOST: mongodb.pragna.site # submit your values
+REDIS_HOST: redis.pragna.site
